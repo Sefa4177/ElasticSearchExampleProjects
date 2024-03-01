@@ -1,3 +1,5 @@
+using Elasticsearch.Net;
+using Nest;
 using Elasticsearch.API.Extensions;
 using Elasticsearch.API.Services;
 using Elasticsearch.API.Repository;
