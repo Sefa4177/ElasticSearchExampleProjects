@@ -9,13 +9,16 @@ namespace Elasticsearch.API.Controllers
     [ApiController]
     public class BaseController : ControllerBase
     {
+
         [NonAction]
         public IActionResult CreateActionResult<T>(ResponseDto<T> response)
         {
+
             if (response.StatusCode == HttpStatusCode.NoContent)
                 return new ObjectResult(null) { StatusCode = response.StatusCode.GetHashCode() };
 
             return new ObjectResult(response) { StatusCode = response.StatusCode.GetHashCode() };
+
         }
     }
 }
