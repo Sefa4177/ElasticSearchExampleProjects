@@ -32,15 +32,8 @@ namespace Elasticsearch.API.Repositories
             //.Query(q => q.Term(t => t.CustomerFirstName.Suffix("keyword"), customerFirstName)));
 
             //3. way
-
             var termQuery = new TermQuery("customer_first_name.keyword") { Value = customerFirstName, CaseInsensitive = true };
-
             var result = await _client.SearchAsync<ECommerce>(s => s.Index(indexName).Query(termQuery));
-
-
-
-
-
 
             foreach (var hit in result.Hits) hit.Source.Id = hit.Id;
             return result.Documents.ToImmutableList();
@@ -55,6 +48,7 @@ namespace Elasticsearch.API.Repositories
             {
                 terms.Add(x);
             });
+
             //1.way
             //var termsQuery = new TermsQuery()
             //{
@@ -73,14 +67,6 @@ namespace Elasticsearch.API.Repositories
             .Suffix("keyword"))
             .Terms(new TermsQueryField(terms.AsReadOnly())))));
 
-
-
-
-
-
-
-
-
             foreach (var hit in result.Hits) hit.Source.Id = hit.Id;
             return result.Documents.ToImmutableList();
 
@@ -96,8 +82,6 @@ namespace Elasticsearch.API.Repositories
                             .Suffix("keyword"))
                                 .Value(CustomerFullName))));
 
-
-
             return result.Documents.ToImmutableList();
 
         }
@@ -109,8 +93,6 @@ namespace Elasticsearch.API.Repositories
                         .NumberRange(nr => nr
                             .Field(f => f.TaxfulTotalPrice)
                                 .Gte(FromPrice).Lte(ToPrice)))));
-
-
 
             return result.Documents.ToImmutableList();
 
@@ -127,8 +109,6 @@ namespace Elasticsearch.API.Repositories
 
             var result = await _client.SearchAsync<ECommerce>(s =>
                 s.Index(indexName).Size(1000).Query(q => q.Match(m => m.Field(f => f.CustomerFullName).Query("shaw"))));
-
-
 
             foreach (var hit in result.Hits) hit.Source.Id = hit.Id;
             return result.Documents.ToImmutableList();
@@ -168,7 +148,6 @@ namespace Elasticsearch.API.Repositories
                             .Suffix("keyword"))
                                 .Wildcard(customerFullName))));
 
-
             foreach (var hit in result.Hits) hit.Source.Id = hit.Id;
             return result.Documents.ToImmutableList();
 
@@ -193,7 +172,6 @@ namespace Elasticsearch.API.Repositories
         public async Task<ImmutableList<ECommerce>> MatchQueryFullTextAsync(string categoryName)
         {
 
-
             var result = await _client.SearchAsync<ECommerce>(s => s.Index(indexName)
                 .Size(1000).Query(q => q
                     .Match(m => m
@@ -202,11 +180,9 @@ namespace Elasticsearch.API.Repositories
 
             foreach (var hit in result.Hits) hit.Source.Id = hit.Id;
             return result.Documents.ToImmutableList();
-
         }
         public async Task<ImmutableList<ECommerce>> MultiMatchQueryFullTextAsync(string name)
         {
-
 
             var result = await _client.SearchAsync<ECommerce>(s => s.Index(indexName)
                 .Size(1000).Query(q => q
@@ -218,12 +194,10 @@ namespace Elasticsearch.API.Repositories
 
             foreach (var hit in result.Hits) hit.Source.Id = hit.Id;
             return result.Documents.ToImmutableList();
-
         }
 
         public async Task<ImmutableList<ECommerce>> MatchBoolPrefixFullTextAsync(string customerFullName)
         {
-
             var result = await _client.SearchAsync<ECommerce>(s => s.Index(indexName)
                 .Size(1000).Query(q => q
                     .MatchBoolPrefix(m => m
@@ -232,13 +206,11 @@ namespace Elasticsearch.API.Repositories
 
             foreach (var hit in result.Hits) hit.Source.Id = hit.Id;
             return result.Documents.ToImmutableList();
-
         }
 
 
         public async Task<ImmutableList<ECommerce>> MatchPhraseFullTextAsync(string customerFullName)
         {
-
             var result = await _client.SearchAsync<ECommerce>(s => s.Index(indexName)
                 .Size(1000).Query(q => q
                     .MatchPhrase(m => m
@@ -247,12 +219,10 @@ namespace Elasticsearch.API.Repositories
 
             foreach (var hit in result.Hits) hit.Source.Id = hit.Id;
             return result.Documents.ToImmutableList();
-
         }
 
         public async Task<ImmutableList<ECommerce>> MatchPhrasePrefixFullTextAsync(string customerFullName)
         {
-
             var result = await _client.SearchAsync<ECommerce>(s => s.Index(indexName)
                 .Size(1000).Query(q => q
                     .MatchPhrasePrefix(m => m
@@ -261,13 +231,11 @@ namespace Elasticsearch.API.Repositories
 
             foreach (var hit in result.Hits) hit.Source.Id = hit.Id;
             return result.Documents.ToImmutableList();
-
         }
 
 
         public async Task<ImmutableList<ECommerce>> CompoundQueryExampleOneAsync(string cityName, double taxfulTotalPrice, string categoryName, string menufacturer)
         {
-
             var result = await _client.SearchAsync<ECommerce>(s => s.Index(indexName)
                 .Size(1000).Query(q => q
                     .Bool(b => b
@@ -287,8 +255,6 @@ namespace Elasticsearch.API.Repositories
                             .Term(t => t
                                 .Field("manufacturer.keyword")
                                 .Value(menufacturer))))
-
-
                 ));
 
             foreach (var hit in result.Hits) hit.Source.Id = hit.Id;
@@ -301,14 +267,8 @@ namespace Elasticsearch.API.Repositories
         public async Task<ImmutableList<ECommerce>> CompoundQueryExampleTwoAsync(string customerFullName)
         {
 
-
-
-
             //var result = await _client.SearchAsync<ECommerce>(s => s.Index(indexName)
             //	.Size(1000).Query(q =>q.MatchPhrasePrefix(m=>m.Field(f=>f.CustomerFullName).Query(customerFullName))));
-
-
-
 
             var result = await _client.SearchAsync<ECommerce>(s => s.Index(indexName)
                 .Size(1000).Query(q => q
@@ -320,10 +280,6 @@ namespace Elasticsearch.API.Repositories
                             .Prefix(p => p
                                 .Field(f => f.CustomerFullName.Suffix("keyword"))
                                 .Value(customerFullName))))));
-
-
-
-
 
             foreach (var hit in result.Hits) hit.Source.Id = hit.Id;
             return result.Documents.ToImmutableList();

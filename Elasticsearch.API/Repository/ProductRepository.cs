@@ -26,8 +26,6 @@ namespace Elasticsearch.API.Repository
             newProduct.Id = response.Id;
 
             return newProduct;
-
-
         }
 
         public async Task<ImmutableList<Product>> GetAllAsync()
@@ -37,18 +35,10 @@ namespace Elasticsearch.API.Repository
 
             foreach (var hit in result.Hits) hit.Source.Id = hit.Id;
             return result.Documents.ToImmutableList();
-
-
-
-
-
-
         }
 
         public async Task<Product?> GetByIdAsync(string id)
         {
-
-
             var response = await _client.GetAsync<Product>(id, x => x.Index(indexName));
 
             if (!response.IsSuccess())
@@ -58,7 +48,6 @@ namespace Elasticsearch.API.Repository
 
             response.Source.Id = response.Id;
             return response.Source;
-
         }
 
 
@@ -67,16 +56,10 @@ namespace Elasticsearch.API.Repository
             var response = await _client.UpdateAsync<Product, ProductUpdateDto>(indexName, updateProduct.Id, x => x.Doc(updateProduct));
 
             return response.IsSuccess();
-
         }
-        /// <summary>
-        /// Hata yönetimi için bu method ele alınmıştır.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+
         public async Task<DeleteResponse> DeleteAsync(string id)
         {
-
             var response = await _client.DeleteAsync<Product>(id, x => x.Index(indexName));
             return response;
         }
